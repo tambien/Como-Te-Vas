@@ -1,0 +1,88 @@
+/*
+ * MAIN
+ */
+
+#container {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+	min-width: 700px;
+	min-height: 600px;
+	background-color: white;
+}
+#container #canvas {
+	position: absolute;
+	width: 900px;
+	height: 500px;
+	margin-top: -250px;
+	margin-left: -450px;
+	left: 50%;
+	top: 50%;
+}
+/*
+ * SCENERY SELECTORS
+ */
+#scenerySelectorContainer {
+	position: absolute;
+	left: -100px;
+	top: 0px;
+	height: 100%;
+	width: 80px;
+}
+.sceneSelector {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	left: 0px;
+	overflow: hidden;
+}
+.sceneSelector #trackInstrumentIndicator {
+	width: 80px;
+	height: 80px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 100;
+	background-color: black;
+}
+.sceneSelector #sceneContainer {
+	position: absolute;
+	left: 80px;
+	top: 0px;
+	width: 480px;
+	height: 80px;
+}
+.sceneSelector .sceneOption {
+	margin: 5px;
+	width: 70px;
+	height: 70px;
+	position: relative;
+	float: left;
+}
+.sceneSelector .sceneOption.selected {
+	border: 2px solid white;
+	margin: 3px;
+}
+.sceneSelector .sceneOption:hover {
+	transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+}
+.sceneSelector #green {
+	background-color: green;
+}
+.sceneSelector #red {
+	background-color: red;
+}
+.sceneSelector #swamp {
+	background-color: gray;
+}
+.sceneSelector #underwater {
+	background-color: blue;
+}

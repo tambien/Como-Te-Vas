@@ -1,0 +1,38 @@
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>COMO TE VAS</title>
+	<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+	<!-- STYLE-->
+	<link type="text/css" href="./style/trails.css" rel="Stylesheet"/>
+	<!-- DEPENDENCIES -->
+	<script type="text/javascript" src="./scripts/dependencies/jquery.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/jquery-ui-1.9.2.custom.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/underscore.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/backbone.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/jquery.transit.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/three.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/stats.min.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/RequestAnimationFrame.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/tween.min.js"></script>
+	<!-- APPLICATION-->
+	<script type="text/javascript" src="./scripts/application/Trails.js"></script>
+	<script type="text/javascript" src="./scripts/application/Track.js"></script>
+</head>
+<body>
+	<div id="container">
+		<div id="canvas">
+			<div id="scenerySelectorContainer"></div>
+		</div>
+	</div>
+	<!-- BEGIN: Underscore Template Definition. -->
+	<script type="text/template" id="sceneSelectorTemplate">
+		<div id="trackInstrumentIndicator"></div>
+		<div id='sceneContainer'>
+		<div id='green' class='sceneOption selected'></div>
+		<div id='red' class='sceneOption'></div>
+		<div id='swamp' class='sceneOption'></div>
+		<!--div id='underwater' class='sceneOption'></div-->
+		</div>
+	</script>
+</body>
