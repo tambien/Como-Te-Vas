@@ -12,7 +12,7 @@
 	width: 100%;
 	min-width: 700px;
 	min-height: 600px;
-	background-color: white;
+	background-color: #262220;
 }
 #container #canvas {
 	position: absolute;
@@ -22,6 +22,52 @@
 	margin-left: -450px;
 	left: 50%;
 	top: 50%;
+	border: 5px solid black;
+	border-radius: 3px;
+}
+#songTitle {
+	position: absolute;
+	width: 400px;
+	height: 50px;
+	top: 10px;
+	right: 10px;
+	color: white;
+	font-family: sans-serif;
+	font-size: 50px;
+	z-index: 100000;
+	font-style:italic;
+}
+/*
+ * INSTRUCTIONS/CREDITS
+ */
+#instructions {
+	margin-top: 265px;
+	margin-left: -250px;
+}
+#credits {
+	margin-top: 265px;
+	margin-left: 100px;
+}
+
+.infobutton{
+	position: absolute;
+	width: 160px;
+	height: 22px;
+	margin-top: 265px;
+	left: 50%;
+	top: 50%;
+	background-color: black;
+	color: white;
+	font-family: sans-serif;
+	font-size: 17px;
+	text-align: center;
+	border-radius: 3px;
+	cursor: pointer;
+	z-index: 100000;
+}
+.infobutton:hover{
+	background-color: white;
+	color: #262220;
 }
 /*
  * SCENERY SELECTORS
@@ -48,6 +94,21 @@
 	left: 0px;
 	z-index: 100;
 	background-color: black;
+	border-radius: 3px;
+}
+
+.sceneSelector #trackTitle{
+	width: 70px;
+	height: 70px;
+	margin: 5px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1000;
+	color: white;
+	font-family: sans-serif;
+	font-size: 18px;
+	text-align: center;
 }
 .sceneSelector #sceneContainer {
 	position: absolute;
@@ -62,12 +123,17 @@
 	height: 70px;
 	position: relative;
 	float: left;
+	cursor: pointer;
 }
-.sceneSelector .sceneOption.selected {
+.sceneSelector .selected {
+	position: relative;
+	width: 66px;
+	height: 66px;
 	border: 2px solid white;
-	margin: 3px;
+	border-radius: 2px;
 }
-.sceneSelector .sceneOption:hover {
+
+#sceneContainer .sceneOption:hover {
 	transform: scale(1.1);
 	-ms-transform: scale(1.1);
 	-webkit-transform: scale(1.1);
@@ -75,14 +141,68 @@
 	-moz-transform: scale(1.1);
 }
 .sceneSelector #green {
-	background-color: green;
+	background-image: url("./thumbs/thumb_test_green.png");
 }
-.sceneSelector #red {
-	background-color: red;
+.sceneSelector #cave {
+	background-image: url("./thumbs/thumb_cave.png");
+}
+.sceneSelector #space {
+	background-image: url("./thumbs/thumb_space.png");
 }
 .sceneSelector #swamp {
-	background-color: gray;
+	background-image: url("./thumbs/thumb_swamp.png");
 }
 .sceneSelector #underwater {
-	background-color: blue;
+	background-image: url("./thumbs/thumb_underwater.png");
 }
+/*
+ * LOADING
+ */
+ #loadingScreen {
+ 	z-index: 10000;
+ 	width: 100%;
+ 	height: 100%;
+ 	background-color: #262220;
+ 	position: absolute;
+ 	top: 0px;
+ 	left: 0px;
+ 	opacity: 1;
+ }
+ #loadingScreen #progressContainer {
+ 	position: absolute;
+ 	border: 2px solid white;
+ 	border-radius: 5px;
+ 	width: 500px;
+ 	height: 100px;
+ 	top: 50%;
+ 	left: 50%;
+ 	margin-left: -250px;
+ 	margin-top: -50px;
+ }
+
+ #loadingScreen #loadedArea {
+ 	position: absolute;
+ 	height: 100%;
+ 	width: 0%;
+ 	top: 0px;
+ 	left: 0px;
+ 	background-color: white;
+ }
+
+ #loadingScreen #playButton{
+ 	position: absolute;
+ 	height: 100%;
+ 	width: 100%;
+ 	top: 0px;
+ 	left: 0px;
+ 	color: #262220;
+ 	font-family: sans-serif;
+ 	font-size: 80px;
+ 	text-align: center;
+ 	cursor: pointer;
+ }
+
+  #loadingScreen #playButton:hover{
+ 	background-color: #262220;
+ 	color: white;
+ }

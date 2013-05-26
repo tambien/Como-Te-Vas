@@ -10,11 +10,11 @@ var TRAILS = function() {
 
 	var versionNumber = "0.0.1";
 
-	var context = new webkitAudioContext();
-
 	var $container;
 
 	var track;
+
+	var loadingBar;
 
 	//INITIALIZATION///////////////////////////////////////////////////////////
 
@@ -29,6 +29,10 @@ var TRAILS = function() {
 		//start the drawing
 		render();
 		makeTracks();
+		//make the loading bar
+		loadingBar = new TRAILS.LoadingBar({
+			model : tracks
+		});
 	}
 
 	//THREE////////////////////////////////////////////////////////////////////
@@ -63,6 +67,7 @@ var TRAILS = function() {
 			stats = new Stats();
 			stats.domElement.style.position = 'absolute';
 			stats.domElement.style.top = '0px';
+			stats.domElement.style.right = '0px';
 			$container.append(stats.domElement);
 		}
 	}
@@ -71,6 +76,7 @@ var TRAILS = function() {
 
 	function bindEvents() {
 		$(window).resize(sizeTHREE);
+		bindInfoClicks();
 	}
 
 	//DRAW LOOP//////////////////////////////////////////////////////////////////
@@ -86,21 +92,94 @@ var TRAILS = function() {
 
 	//TRACKS///////////////////////////////////////////////////////////////////
 	
-	var tracks = [];
+	var tracks = new Backbone.Collection();
 
 	function makeTracks() {
 		for (var i = 0; i < 6; i++){
 			var t = new TRAILS.Track();
-			tracks.push(t);
+			tracks.add(t);
 		}
+	}
+
+	function playTracks(){
+		var time = AudioContext.currentTime + .1;
+		tracks.forEach(function(track){
+			track.play(time);
+		});
+	}
+
+	//DIALOG WINDOWS///////////////////////////////////////////////////////////
+
+	function bindInfoClicks(){
+		$("#instructions").click(infoClicked);
+		$("#credits").click(creditsClicked);
+	}
+
+	function infoClicked(event){
+		event.preventDefault();
+		settings = "width=240, height=480, top=20, left=20, scrollbars=no, location=no, directories=no, status=no, menubar=no, toolbar=no, resizable=no, dependent=no";
+    	win = window.open('info.html', 'INFO', settings);
+    	win.focus();
+	}
+
+	function creditsClicked(event){
+		event.preventDefault();
+		settings = "width=240, height=480, top=20, left=400, scrollbars=no, location=no, directories=no, status=no, menubar=no, toolbar=no, resizable=no, dependent=no";
+    	win = window.open('credits.html', 'CREDITS', settings);
+    	win.focus();
 	}
 
 	//API//////////////////////////////////////////////////////////////////////
 
 	return {
 		initialize : initialize,
-		context : context,
+		tracks : tracks, 
+		play : playTracks,
 	}
 }();
 
 TRAILS.dev = true;
+
+TRAILS.AudioTracks = ["bass-synth", "drums-claps-snares", 'guitar-solo', 'guitars', 'vox-back', 'vox-lead'];
+TRAILS.Scenes = ["space", "green", "swamp", "underwater"];
+
+window.AudioContext = new webkitAudioContext();
+var tuna = new Tuna(AudioContext);
+
+//LOADING BAR
+TRAILS.LoadingBar = Backbone.View.extend({
+	initialize : function(){
+		this.setElement($("#loadingScreen"));
+		this.listenTo(this.model, "change:loadingProgress", this.updateProgress);
+		this.$loaded = this.$el.find("#loadedArea");
+	},
+	updateProgress : function(){ 
+		var total = 0;
+		//get the total progress
+		this.model.forEach(function(track){
+			total += track.get("loadingProgress");
+		});
+		total /= this.model.length;
+		var percentage = parseInt(total * 100);
+		var self = this;
+		percentage += "%";
+		this.$loaded.stop().transition({
+			width : percentage,
+		}, 100, function(){
+			if (percentage === "100%"){
+				//make the play button
+				var button = $("<div id='playButton'>PLAY</div>").appendTo(self.$loaded);
+				var el = self.$el;
+				button.click(function(event){
+					event.preventDefault();
+					el.fadeTo(500, 0, function(){
+						el.css({
+							zIndex : -100,
+						})
+						TRAILS.play();
+					});
+				});
+			}
+		});
+	}
+})

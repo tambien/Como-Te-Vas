@@ -15,11 +15,21 @@
 	<script type="text/javascript" src="./scripts/dependencies/stats.min.js"></script>
 	<script type="text/javascript" src="./scripts/dependencies/RequestAnimationFrame.js"></script>
 	<script type="text/javascript" src="./scripts/dependencies/tween.min.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/tuna.js"></script>
 	<!-- APPLICATION-->
 	<script type="text/javascript" src="./scripts/application/Trails.js"></script>
 	<script type="text/javascript" src="./scripts/application/Track.js"></script>
+	<script type="text/javascript" src="./scripts/application/Effects.js"></script>
 </head>
 <body>
+	<div id='songTitle'>Como Te Vas</div>
+	<div id='loadingScreen'>
+			<div id = "progressContainer">
+				<div id = "loadedArea"></div>
+			</div>
+		</div>
+	<div id='instructions' class='infobutton'>instructions</div>
+	<div id='credits' class='infobutton'>credits</div>
 	<div id="container">
 		<div id="canvas">
 			<div id="scenerySelectorContainer"></div>
@@ -28,11 +38,13 @@
 	<!-- BEGIN: Underscore Template Definition. -->
 	<script type="text/template" id="sceneSelectorTemplate">
 		<div id="trackInstrumentIndicator"></div>
+		<div id="trackTitle">TEST TITLE</div>
 		<div id='sceneContainer'>
 		<div id='green' class='sceneOption selected'></div>
-		<div id='red' class='sceneOption'></div>
+		<div id='space' class='sceneOption'></div>
+		<div id='cave' class='sceneOption'></div>
 		<div id='swamp' class='sceneOption'></div>
-		<!--div id='underwater' class='sceneOption'></div-->
+		<div id='underwater' class='sceneOption'></div>
 		</div>
 	</script>
 </body>
