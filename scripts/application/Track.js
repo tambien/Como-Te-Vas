@@ -124,26 +124,40 @@ TRAILS.Track.View = Backbone.View.extend({
 	initialize : function() {
 		//listen for changes
 		this.listenTo(this.model, "change:scene", this.changeScene);
+		//make the two divs
+		var layerNum = "layer"+this.model.get("trackNumber");
+		this.$layer = $("<div id='"+layerNum+"' class='sceneLayer'></div>").appendTo("#scene");
+		this.$imgContainer = $("<div class='imgContainer'></div>").appendTo(this.$layer);
+		this.$layer.css({
+			x : "0px", 
+			width: 2 * TRAILS.imgWidth,
+			height: TRAILS.imgHeight,
+			zIndex : -this.model.get("trackNumber")
+		});
 		this.loadScenes();
 		this.setScene();
 	},
 	setScene : function() {
-		var self = this;
-		var image = THREE.ImageUtils.loadTexture("./images/" + self.model.get("scene") + "_" + "0" + self.model.get("trackNumber") + ".png", new THREE.UVMapping(), function() {
+		var imgName = "./images/"+this.model.get("scene") + "_" + "0" + this.model.get("trackNumber")+".png";
+		this.$imgContainer.html("<img src='"+imgName+"'/><img src='"+imgName+"'/>");
+		this.scrollBackground();
+		/*
+		var image = THREE.ImageUtils.loadTexture(imgName, new THREE.UVMapping(), function() {
 			image.needsUpdate = true;
 			image.wrapS = THREE.RepeatWrapping;
 			image.repeat.set(1, 1);
 
 			var material = new THREE.MeshBasicMaterial({
 				map : image,
-				transparent : true,
+				transparent : false,
 				//side : THREE.DoubleSide,
 				overdraw : true,
 				//wireframeLinewidth: 1000,
-				//blending: THREE.AdditiveBlending,
+				//blending: THREE.NormalBlending,
 
 			})
-			self.sprite = new THREE.Mesh(new THREE.PlaneGeometry(2048, 512), material);
+			material.overdraw = true;
+			self.sprite = new THREE.Mesh(new THREE.PlaneGeometry(1536, 512), material);
 			//self.sprite.dynamic = true
 			//set the z value based on the track number
 			self.sprite.position.z = -self.model.get("trackNumber");
@@ -152,6 +166,7 @@ TRAILS.Track.View = Backbone.View.extend({
 			//self.render(self.model);
 			self.scrollBackground();
 		});
+		*/
 	},
 	loadScenes : function(){
 		for (var i = 0; i < TRAILS.Scenes.length; i ++){
@@ -163,15 +178,35 @@ TRAILS.Track.View = Backbone.View.extend({
 		}
 	},
 	changeScene : function(model, scene){
-		var self= this;
+		var imgName = "./images/"+this.model.get("scene") + "_" + "0" + this.model.get("trackNumber")+".png";
+		//fade in and out quickly
+		var imgContainer = this.$imgContainer;
+		var layer = this.$layer;
+		layer.fadeTo(300, 0, function(){
+			imgContainer.html("<img src='"+imgName+"'/><img src='"+imgName+"'/>");
+			layer.fadeTo(300, 1);
+		});
+		/*
 		this.sprite.material.map = THREE.ImageUtils.loadTexture("./images/" + scene + "_" + "0" + model.get("trackNumber") + ".png", new THREE.UVMapping(), function() {
 			self.sprite.material.map.needsUpdate = true;
 			self.sprite.material.map.wrapS = THREE.RepeatWrapping;
 			self.sprite.material.map.repeat.set(1, 1);
 		});
+		*/
 	},
 	scrollBackground : function() {
 		var scrollSpeed = (this.model.get("trackNumber") + 1) * 8000;
+		var self = this;
+		var imgContainer = this.$imgContainer
+		this.$imgContainer.transition({
+			x : "-"+TRAILS.imgWidth+"px"
+		}, scrollSpeed, 'linear', function(){
+			imgContainer.css({
+				x : "0px"
+			});
+			self.scrollBackground();
+		});
+		/*
 		var self = this;
 		var tween = new TWEEN.Tween({
 			left : 0,
@@ -180,6 +215,7 @@ TRAILS.Track.View = Backbone.View.extend({
 		}, scrollSpeed).easing(TWEEN.Easing.Linear.None).onUpdate(function() {
 			self.sprite.material.map.offset.x = this.left;
 		}).start().repeat(Infinity);
+		*/
 	}
 });
 
@@ -198,8 +234,8 @@ TRAILS.Track.Selector = Backbone.View.extend({
 		this.$el.appendTo($("#scenerySelectorContainer"));
 		this.$indicator = this.$el.find("#trackInstrumentIndicator");
 		this.$trackTitle = this.$el.find("#trackTitle");
-		console.log(TRAILS.AudioTracks[this.model.get("trackNumber")]);
-		this.$trackTitle.html(TRAILS.AudioTracks[this.model.get("trackNumber")]);
+		var trackName = TRAILS.AudioTracks[this.model.get("trackNumber")];
+		this.$trackTitle.html("<img src='./images/icon-"+trackName+".png'/>");
 		this.$sceneContainer = this.$el.find("#sceneContainer");
 		//position the element relative to the bottom based on the track number
 		var pos = (this.model.get("trackNumber") / 6) * 100;
@@ -215,10 +251,18 @@ TRAILS.Track.Selector = Backbone.View.extend({
 
 	},
 	render : function(model){
+		//remove all of the selected class
+		var allSelected = this.$el.find(".selected");
+		allSelected.removeClass("selected");
+		var selected = this.$el.find("#"+this.model.get('scene'));
+		var clone = selected.clone();
+		selected.addClass("selected");
+		this.$indicator.html(clone);
+		/*
 		var clone = this.$selected.clone();
 		clone.removeClass("selected");
-		console.log(clone);
 		this.$indicator.html(clone);
+		*/
 	},
 	openOptions : function(event){
 		this.$el.stop().transition({
@@ -232,14 +276,14 @@ TRAILS.Track.Selector = Backbone.View.extend({
 	}, 
 	selectOption : function(event){
 		event.preventDefault();
+		/*
 		//remove the selector class from the other options
 		//this.$selected.find(".selected").remove();
 		this.$selected.removeClass('selected');
-		this.$selected = $(event.target);
-		//add it to this selector
-		this.$selected.addClass('selected');
+		*/
+		var selected = $(event.target);
 		//get the id of the target
-		var scene = this.$selected.attr("id");
+		var scene = selected.attr("id");
 		this.model.set("scene", scene);
 	}
 })

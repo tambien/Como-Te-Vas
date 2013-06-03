@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="./scripts/dependencies/underscore.js"></script>
 	<script type="text/javascript" src="./scripts/dependencies/backbone.js"></script>
 	<script type="text/javascript" src="./scripts/dependencies/jquery.transit.js"></script>
-	<script type="text/javascript" src="./scripts/dependencies/three.js"></script>
+	<script type="text/javascript" src="./scripts/dependencies/three.min.js"></script>
 	<script type="text/javascript" src="./scripts/dependencies/stats.min.js"></script>
 	<script type="text/javascript" src="./scripts/dependencies/RequestAnimationFrame.js"></script>
 	<script type="text/javascript" src="./scripts/dependencies/tween.min.js"></script>
@@ -22,16 +22,28 @@
 	<script type="text/javascript" src="./scripts/application/Effects.js"></script>
 </head>
 <body>
-	<div id='songTitle'>Como Te Vas</div>
+	<div id='bandName'>Trails And Ways</div>
+	<div id='songTitle'><img src='./images/title_como_pixels.png'/></div>
 	<div id='loadingScreen'>
 			<div id = "progressContainer">
-				<div id = "loadedArea"></div>
+				<div id = "loadedArea">
+					<div id='playbutton'>
+						<img src='./images/playbutton.png'/>
+					</div>
+				</div>
 			</div>
 		</div>
 	<div id='instructions' class='infobutton'>instructions</div>
-	<div id='credits' class='infobutton'>credits</div>
+	<div id='credits' class='infobutton'>
+		Music: <a href='http://trailsandways.com/' target='_blank'>Trails And Ways</a>
+		<br>
+		Art: <a href='http://pixelbutter.com/' target='_blank'>David Wallace</a>
+		<br>
+		Code: <a href='http://yotammann.info' target='_blank'>Yotam Mann</a>
+	</div>
 	<div id="container">
 		<div id="canvas">
+			<div id='scene'></div>
 			<div id="scenerySelectorContainer"></div>
 		</div>
 	</div>
@@ -43,7 +55,7 @@
 		<div id='green' class='sceneOption selected'></div>
 		<div id='space' class='sceneOption'></div>
 		<div id='cave' class='sceneOption'></div>
-		<div id='swamp' class='sceneOption'></div>
+		<!--div id='swamp' class='sceneOption'></div-->
 		<div id='underwater' class='sceneOption'></div>
 		</div>
 	</script>

@@ -14,7 +14,7 @@ var TRAILS = function() {
 
 	var track;
 
-	var loadingBar;
+	var loadingBar, hash;
 
 	//INITIALIZATION///////////////////////////////////////////////////////////
 
@@ -33,6 +33,10 @@ var TRAILS = function() {
 		loadingBar = new TRAILS.LoadingBar({
 			model : tracks
 		});
+		//make the hash listener
+		hash = new TRAILS.Hash({
+			model : tracks
+		})
 	}
 
 	//THREE////////////////////////////////////////////////////////////////////
@@ -40,7 +44,7 @@ var TRAILS = function() {
 	var camera, projector, renderer;
 
 	function setupTHREE() {
-		camera = new THREE.PerspectiveCamera(70, 4 / 3, 1, 10000);
+		camera = new THREE.PerspectiveCamera(70, 4 / 3, 1, 1000);
 		camera.position.set(0, 0, 360);
 		TRAILS.scene = new THREE.Scene();
 		projector = new THREE.Projector();
@@ -86,8 +90,8 @@ var TRAILS = function() {
 		if(TRAILS.dev) {
 			stats.update();
 		}
-		renderer.render(TRAILS.scene, camera);
-		TWEEN.update();
+		//renderer.render(TRAILS.scene, camera);
+		//TWEEN.update();
 	}
 
 	//TRACKS///////////////////////////////////////////////////////////////////
@@ -111,8 +115,8 @@ var TRAILS = function() {
 	//DIALOG WINDOWS///////////////////////////////////////////////////////////
 
 	function bindInfoClicks(){
-		$("#instructions").click(infoClicked);
-		$("#credits").click(creditsClicked);
+		//$("#instructions").click(infoClicked);
+		//$("#credits").click(creditsClicked);
 	}
 
 	function infoClicked(event){
@@ -140,8 +144,10 @@ var TRAILS = function() {
 
 TRAILS.dev = true;
 
-TRAILS.AudioTracks = ["bass-synth", "drums-claps-snares", 'guitar-solo', 'guitars', 'vox-back', 'vox-lead'];
-TRAILS.Scenes = ["space", "green", "swamp", "underwater"];
+TRAILS.AudioTracks = ['ctv-vocals-lead', 'ctv-vocals-bg', 'ctv-guitar-lead', 'ctv-guitar-rhythm', "ctv-keys-bass-noise", "ctv-drums-perc"];
+TRAILS.Scenes = ["green", "space", "swamp", "underwater"];
+TRAILS.imgWidth = 1500;
+TRAILS.imgHeight = 500;
 
 window.AudioContext = new webkitAudioContext();
 var tuna = new Tuna(AudioContext);
@@ -168,7 +174,9 @@ TRAILS.LoadingBar = Backbone.View.extend({
 		}, 100, function(){
 			if (percentage === "100%"){
 				//make the play button
-				var button = $("<div id='playButton'>PLAY</div>").appendTo(self.$loaded);
+				var button = $(self.$loaded).find("#playbutton");
+				button.css("zIndex", 100);
+				button.fadeTo(800, 1);
 				var el = self.$el;
 				button.click(function(event){
 					event.preventDefault();
@@ -181,5 +189,28 @@ TRAILS.LoadingBar = Backbone.View.extend({
 				});
 			}
 		});
+	}
+})
+
+TRAILS.Hash = Backbone.View.extend({
+	initialize : function(){
+		//set the layers initially
+		//if there is a hash, decode it
+		if (window.location.hash !== ""){
+			var scenes = JSON.parse(decodeURIComponent(window.location.hash).slice(1));
+			this.model.forEach(function(obj, index){
+				obj.set("scene", scenes[index]);
+			});
+		}
+		//listen to layer changes
+		this.listenTo(this.model, "change:scene", this.updateHash);
+	},
+	updateHash : function(){
+		//go through each of the scenes and make a scene object
+		var scenes = []
+		this.model.forEach(function(obj){
+			scenes.push(obj.get("scene"));
+		});
+		window.location.hash = encodeURIComponent(JSON.stringify(scenes));
 	}
 })
